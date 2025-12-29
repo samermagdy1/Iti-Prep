@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة متابعة الدراسة والتقدم لمعهد ITI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* أنماط CSS العامة */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --completed-color: #2e7d32;
+            --inprogress-color: #ff9800;
+            --notstarted-color: #9e9e9e;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        /* رأس الصفحة */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* تبويبات الصفحة */
+        .tabs-container {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray-color);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+            background-color: #f0f5ff;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* تصميم البطاقات */
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+        }
+        
+        .card-title i {
+            font-size: 1.8rem;
+        }
+        
+        /* حاويات التخطيط */
+        .study-plan-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 1100px) {
+            .study-plan-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* المراحل الدراسية */
+        .phase-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid var(--primary-color);
+            transition: all 0.3s;
+        }
+        
+        .phase-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .phase-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .phase-duration {
+            background-color: #f0f5ff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+        
+        /* العناصر الدراسية */
+        .course-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            margin-bottom: 15px;
+            background-color: #f9f9ff;
+            border-radius: 10px;
+            border-right: 5px solid #e0e0e0;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .course-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-checkbox {
+            margin-left: 15px;
+            margin-top: 3px;
+        }
+        
+        .course-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+        
+        .course-content {
+            flex: 1;
+        }
+        
+        .course-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+        
+        .course-description {
+            color: var(--gray-color);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .course-duration {
+            background-color: #e6f7ff;
+            color: #0066cc;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .course-timer {
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .timer-expired {
+            background-color: #ffcccc;
+            color: #990000;
+            border: 1px solid #ff9999;
+        }
+        
+        .timer-warning {
+            background-color: #fff4e6;
+            color: #e8590c;
+            border: 1px solid #ffc699;
+        }
+        
+        .timer-ok {
+            background-color: #e6f7e6;
+            color: #2e7d32;
+            border: 1px solid #a3d9a5;
+        }
+        
+        /* حالة الدورة */
+        .completed-course {
+            background-color: #e6f7e6;
+            border-right-color: var(--completed-color);
+        }
+        
+        .current-course {
+            background-color: #e3f2fd;
+            border-right-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+        
+        .not-started-course {
+            background-color: #f5f5f5;
+            border-right-color: var(--notstarted-color);
+        }
+        
+        /* شريط التقدم */
+        .phase-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .phase-progress-bar {
+            flex: 1;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+        
+        .phase-progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        /* لوحة التقدم الجانبية */
+        .progress-sidebar {
+            position: sticky;
+            top: 20px;
+        }
+        
+        .progress-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .progress-circle-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 25px;
+            position: relative;
+        }
+        
+        .circle-bg {
+            fill: none;
+            stroke: #e0e0e0;
+            stroke-width: 10;
+        }
+        
+        .circle-progress {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .progress-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+        
+        .progress-label {
+            font-size: 1rem;
+            color: var(--gray-color);
+            margin-top: 5px;
+        }
+        
+        .total-time {
+            text-align: center;
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            background-color: #f0f5ff;
+            padding: 12px;
+            border-radius: 10px;
+        }
+        
+        .total-time span {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* المؤقت التنازلي */
+        .countdown-container {
+            background-color: #f0f5ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .countdown-title {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .countdown-display {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+        
+        .countdown-label {
+            text-align: center;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+        
+        /* الأزرار */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #3aafd9;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #d81b60;
+        }
+        
+        /* المصادر التعليمية */
+        .resources-box {
+            background-color: #f9f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border-right: 5px solid var(--success-color);
+        }
+        
+        .resources-title {
+            color: var(--success-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+        }
+        
+        .resource-link {
+            display: block;
+            padding: 12px 18px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: var(--dark-color);
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .resource-link:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .resource-link i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        /* نصائح الدراسة */
+        .study-tips {
+            background-color: #fff4e6;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-right: 5px solid #e8590c;
+        }
+        
+        .tips-title {
+            color: #e8590c;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ffc699;
+        }
+        
+        .tip-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tip-icon {
+            color: #e8590c;
+            margin-left: 10px;
+            margin-top: 3px;
+            font-size: 1.2rem;
+        }
+        
+        /* الحالة الفارغة */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--gray-color);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        /* تذييل الصفحة */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: var(--gray-color);
+            font-size: 0.95rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        footer span {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .tabs-container {
+                flex-direction: column;
+            }
+            
+            .study-plan-container {
+                gap: 20px;
+            }
+            
+            .phase-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .course-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .course-timer {
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .countdown-display {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- رأس الصفحة -->
+    <header>
+        <h1>
+            <i class="fas fa-graduation-cap"></i>
+            خطة الدراسة لمعهد ITI
+        </h1>
+        <p class="subtitle">
+            رحلة إعداد كاملة للمبتدئين بدون خلفية برمجية - من الصفر إلى التقديم للمعهد خلال 98 يومًا
+        </p>
+    </header>
+    
+    <!-- تبويبات التنقل -->
+    <div class="tabs-container">
+        <button class="tab-btn active" data-tab="plan">
+            <i class="fas fa-road"></i> خطة الدراسة
+        </button>
+        <button class="tab-btn" data-tab="daily-tasks">
+            <i class="fas fa-calendar-day"></i> المهام اليومية
+        </button>
+        <button class="tab-btn" data-tab="resources">
+            <i class="fas fa-book-open"></i> المصادر التعليمية
+        </button>
+        <button class="tab-btn" data-tab="progress">
+            <i class="fas fa-chart-line"></i> تقدمي
+        </button>
+    </div>
+    
+    <!-- محتوى تبويب خطة الدراسة -->
+    <div id="plan-tab" class="tab-content active">
+        <div class="study-plan-container">
+            <!-- الجزء الرئيسي للمراحل الدراسية -->
+            <div>
+                <!-- المرحلة الأولى -->
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <div class="phase-title">
+                            <i class="fas fa-seedling"></i>
+                            المرحلة 1: التأسيس (3 أسابيع)
+                        </div>
+                        <div class="phase-duration" id="phase1-timer">21 يومًا متبقيًا</div>
+                    </div>
+                    <p style="margin-bottom: 20px; color: var(--gray-color);">
+                        هذه المرحلة للمبتدئين تمامًا في المجال، حيث تضع الأساس المعرفي والمفاهيمي.
+                    </p>
+                    
+                    <!-- المقررات في المرحلة الأولى -->
+                    <div class="course-item current-course" id="course-1">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course1-check" onchange="toggleCourseCompletion(1)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">1. قيم معهد ITI (ITI values)</div>
+                            <div class="course-description">
+                                تعرف على ثقافة المعهد، قيمه، وطريقة العمل فيه. هذا سيساعدك في المقابلات الشخصية.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 2 يوم</div>
+                                <div class="course-timer timer-ok" id="timer-1">48:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-2">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course2-check" onchange="toggleCourseCompletion(2)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">2. مقدمة في البرمجة (An Introduction to Programming)</div>
+                            <div class="course-description">
+                                أساسيات البرمجة، المنطق البرمجي، الخوارزميات البسيطة، أنواع البيانات، المتغيرات.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-2">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-3">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course3-check" onchange="toggleCourseCompletion(3)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">3. دروس برمجة الكمبيوتر (Computer Programming Tutorial)</div>
+                            <div class="course-description">
+                                تطبيق عملي على أساسيات البرمجة باستخدام لغة بسيطة مثل Python أو JavaScript.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-3">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phase-progress">
+                        <span>تقدم المرحلة</span>
+                        <div class="phase-progress-bar">
+                            <div class="phase-progress-fill" id="phase1-progress" style="width: 10%"></div>
+                        </div>
+                        <span id="phase1-percent">10%</span>
+                    </div>
+                </div>
+                
+                <!-- المرحلة الثانية -->
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <div class="phase-title">
+                            <i class="fas fa-laptop-code"></i>
+                            المرحلة 2: أساسيات التقنية (3 أسابيع)
+                        </div>
+                        <div class="phase-duration" id="phase2-timer">يبدأ بعد 21 يومًا</div>
+                    </div>
+                    <p style="margin-bottom: 20px; color: var(--gray-color);">
+                        بناء على الأساس، نتعلم المهارات التقنية الأساسية المطلوبة.
+                    </p>
+                    
+                    <!-- المقررات في المرحلة الثانية -->
+                    <div class="course-item not-started-course" id="course-4">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course4-check" onchange="toggleCourseCompletion(4)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">4. مقدمة في SQL (Intro to SQL)</div>
+                            <div class="course-description">
+                                تعلم أساسيات قواعد البيانات، كتابة استعلامات SQL بسيطة (SELECT, INSERT, UPDATE, DELETE).
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 5 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-4">120:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-5">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course5-check" onchange="toggleCourseCompletion(5)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">5. مقدمة في أساسيات الويب (Introduction to web fundamentals)</div>
+                            <div class="course-description">
+                                HTML, CSS, JavaScript أساسيات، كيف يعمل الإنترنت، المتصفحات، الخوادم.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-5">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phase-progress">
+                        <span>تقدم المرحلة</span>
+                        <div class="phase-progress-bar">
+                            <div class="phase-progress-fill" id="phase2-progress" style="width: 0%"></div>
+                        </div>
+                        <span id="phase2-percent">0%</span>
+                    </div>
+                </div>
+                
+                <!-- المرحلة الثالثة -->
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <div class="phase-title">
+                            <i class="fas fa-vial"></i>
+                            المرحلة 3: اختبار البرمجيات (4 أسابيع)
+                        </div>
+                        <div class="phase-duration" id="phase3-timer">يبدأ بعد 42 يومًا</div>
+                    </div>
+                    <p style="margin-bottom: 20px; color: var(--gray-color);">
+                        التخصص في مجال اختبار البرمجيات، وهو أحد المسارات الرئيسية في ITI.
+                    </p>
+                    
+                    <!-- المقررات في المرحلة الثالثة -->
+                    <div class="course-item not-started-course" id="course-6">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course6-check" onchange="toggleCourseCompletion(6)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">6. مقدمة في اختبار البرمجيات (Introduction to software testing)</div>
+                            <div class="course-description">
+                                مفاهيم اختبار البرمجيات، أنواع الاختبارات، دورة حياة الاختبار.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-6">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-7">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course7-check" onchange="toggleCourseCompletion(7)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">7. مقدمة في ISTQB</div>
+                            <div class="course-description">
+                                المفاهيم الأساسية للشهادة الدولية في اختبار البرمجيات، المصطلحات، المعايير.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-7">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-8">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course8-check" onchange="toggleCourseCompletion(8)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">8. كتابة حالات الاختبار والإبلاغ عن الأخطاء (Testcase Writing And Bug reporting)</div>
+                            <div class="course-description">
+                                كتابة حالات الاختبار الفعالة، تقارير الأخطاء، أدوات تتبع المشاكل.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-8">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phase-progress">
+                        <span>تقدم المرحلة</span>
+                        <div class="phase-progress-bar">
+                            <div class="phase-progress-fill" id="phase3-progress" style="width: 0%"></div>
+                        </div>
+                        <span id="phase3-percent">0%</span>
+                    </div>
+                </div>
+                
+                <!-- المرحلة الرابعة -->
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <div class="phase-title">
+                            <i class="fas fa-file-alt"></i>
+                            المرحلة 4: الامتحانات والمقابلات (4 أسابيع)
+                        </div>
+                        <div class="phase-duration" id="phase4-timer">يبدأ بعد 70 يومًا</div>
+                    </div>
+                    <p style="margin-bottom: 20px; color: var(--gray-color);">
+                        التجهيز للامتحانات والمقابلات النهائية للتقديم للمعهد.
+                    </p>
+                    
+                    <!-- المقررات في المرحلة الرابعة -->
+                    <div class="course-item not-started-course" id="course-9">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course9-check" onchange="toggleCourseCompletion(9)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">9. امتحان IQ وحل المشكلات (IQ and Problem-Solving exam)</div>
+                            <div class="course-description">
+                                تدريبات على اختبارات الذكاء، حل المسائل المنطقية، التفكير النقدي.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-9">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-10">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course10-check" onchange="toggleCourseCompletion(10)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">10. امتحان اللغة الإنجليزية (English exam)</div>
+                            <div class="course-description">
+                                تحسين مهارات القراءة، الكتابة، الاستماع، والمفردات التقنية بالإنجليزية.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-10">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-11">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course11-check" onchange="toggleCourseCompletion(11)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">11. الامتحان التقني: برمجة C، OOP، قواعد البيانات، تطوير الويب (Technical Exam)</div>
+                            <div class="course-description">
+                                مراجعة شاملة للمفاهيم التقنية، حل امتحانات سابقة، تدريبات عملية.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 7 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-11">168:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-12">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course12-check" onchange="toggleCourseCompletion(12)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">12. مقابلة المهارات الشخصية (Interpersonal Skills Interview)</div>
+                            <div class="course-description">
+                                التدرب على المقابلات، أسئلة شائعة، تقدير الذات، التواصل الفعال.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 4 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-12">96:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item not-started-course" id="course-13">
+                        <div class="course-checkbox">
+                            <input type="checkbox" id="course13-check" onchange="toggleCourseCompletion(13)">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-title">13. المقابلة التقنية (Technical Interview)</div>
+                            <div class="course-description">
+                                أسئلة تقنية متوقعة، حل مشكلات برمجية أثناء المقابلة، عرض المشاريع.
+                            </div>
+                            <div class="course-meta">
+                                <div class="course-duration">المدة: 4 أيام</div>
+                                <div class="course-timer timer-ok" id="timer-13">96:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="phase-progress">
+                        <span>تقدم المرحلة</span>
+                        <div class="phase-progress-bar">
+                            <div class="phase-progress-fill" id="phase4-progress" style="width: 0%"></div>
+                        </div>
+                        <span id="phase4-percent">0%</span>
+                    </div>
+                </div>
+                
+                <!-- نصائح الدراسة -->
+                <div class="study-tips">
+                    <div class="tips-title">
+                        <i class="fas fa-lightbulb"></i>
+                        نصائح للدراسة الفعالة
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <strong>التزم بجدول منتظم:</strong> خصص 3-4 ساعات يوميًا للدراسة المنتظمة بدلاً من الدراسة لساعات طويلة في أيام متباعدة.
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <strong>ركز على مرحلة واحدة:</strong> ابدأ بالمرحلة الأولى فقط ولا تفكر في المراحل التالية حتى تنهي الأساسيات.
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <strong>طبق ما تتعلمه:</strong> طبّق ما تتعلمه عمليًا حتى لو بمشاريع بسيطة، التطبيق العملي يثبت المعلومة.
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <strong>استخدم تقنية "بومودورو":</strong> 25 دقيقة دراسة مركزة + 5 دقائق راحة، ثم كرر الدورة.
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <strong>كن واقعياً:</strong> التزم بجدول زمني واقعي، من الأفضل الدراسة ساعة يوميًا بانتظام بدلاً من 10 ساعات في يوم واحد.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الشريط الجانبي -->
+            <div class="progress-sidebar">
+                <div class="progress-container">
+                    <div class="card-title">
+                        <i class="fas fa-chart-pie"></i>
+                        التقدم الكلي
+                    </div>
+                    
+                    <div class="progress-circle-container">
+                        <svg width="200" height="200" viewBox="0 0 200 200">
+                            <circle class="circle-bg" cx="100" cy="100" r="85"></circle>
+                            <circle class="circle-progress" id="circle-progress" cx="100" cy="100" r="85"></circle>
+                        </svg>
+                        <div class="progress-text">
+                            <div class="progress-value" id="overall-progress">8%</div>
+                            <div class="progress-label">من الخطة الكلية</div>
+                        </div>
+                    </div>
+                    
+                    <div class="total-time">
+                        المدة الكلية للخطة: <span id="total-days">98</span> يوم
+                    </div>
+                    
+                    <div class="countdown-container">
+                        <div class="countdown-title">الوقت المتبقي للانتهاء</div>
+                        <div class="countdown-display" id="overall-countdown">98:00:00:00</div>
+                        <div class="countdown-label">
+                            <span>أيام</span>
+                            <span>ساعات</span>
+                            <span>دقائق</span>
+                            <span>ثواني</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="start-plan-btn" onclick="startStudyPlan()">
+                        <i class="fas fa-play-circle"></i> بدء خطة الدراسة
+                    </button>
+                    
+                    <button class="btn btn-success" onclick="resetStudyPlan()">
+                        <i class="fas fa-redo"></i> إعادة تعيين الخطة
+                    </button>
+                </div>
+                
+                <!-- المصادر التعليمية -->
+                <div class="resources-box">
+                    <div class="resources-title">
+                        <i class="fas fa-book-open"></i>
+                        مصادر مجانية للبدء
+                    </div>
+                    <a href="https://www.freecodecamp.org/learn" target="_blank" class="resource-link">
+                        <i class="fab fa-free-code-camp"></i> FreeCodeCamp - أساسيات البرمجة والويب
+                    </a>
+                    <a href="https://www.khanacademy.org/computing/computer-programming" target="_blank" class="resource-link">
+                        <i class="fas fa-laptop-code"></i> Khan Academy - دروس برمجة للمبتدئين
+                    </a>
+                    <a href="https://www.w3schools.com/" target="_blank" class="resource-link">
+                        <i class="fab fa-html5"></i> W3Schools - HTML, CSS, JavaScript, SQL
+                    </a>
+                    <a href="https://www.youtube.com/c/Freecodecamp" target="_blank" class="resource-link">
+                        <i class="fab fa-youtube"></i> قناة FreeCodeCamp على يوتيوب
+                    </a>
+                    <a href="https://www.youtube.com/c/ElzeroWebSchool" target="_blank" class="resource-link">
+                        <i class="fab fa-youtube"></i> قناة الزيرو - دروس عربية
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- محتوى تبويب المهام اليومية -->
+    <div id="daily-tasks-tab" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">
+                <i class="fas fa-tasks"></i>
+                المهام اليومية
+            </h2>
+            <div id="daily-tasks-content">
+                <div class="empty-state">
+                    <i class="fas fa-calendar-day"></i>
+                    <h3>ابدأ خطة الدراسة أولاً</h3>
+                    <p>انقر على زر "بدء خطة الدراسة" في الشريط الجانبي لبدء رحلتك ورؤية المهام اليومية.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- محتوى تبويب المصادر التعليمية -->
+    <div id="resources-tab" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">
+                <i class="fas fa-download"></i>
+                مصادر إضافية للدراسة
+            </h2>
+            <div class="resources-box">
+                <h3 style="color: var(--primary-color); margin-bottom: 15px;">مواقع تعليمية مجانية:</h3>
+                <a href="https://www.codecademy.com/" target="_blank" class="resource-link">
+                    <i class="fas fa-code"></i> Codecademy - تعلم البرمجة بطريقة تفاعلية
+                </a>
+                <a href="https://www.coursera.org/" target="_blank" class="resource-link">
+                    <i class="fas fa-university"></i> Coursera - دورات من أفضل الجامعات العالمية
+                </a>
+                <a href="https://www.edx.org/" target="_blank" class="resource-link">
+                    <i class="fas fa-graduation-cap"></i> edX - دورات تعليمية عالية الجودة
+                </a>
+                <a href="https://www.udacity.com/" target="_blank" class="resource-link">
+                    <i class="fas fa-laptop"></i> Udacity - تخصصات تقنية متقدمة
+                </a>
+                
+                <h3 style="color: var(--primary-color); margin: 25px 0 15px;">قنوات يوتيوب عربية:</h3>
+                <a href="https://www.youtube.com/c/Academyeh" target="_blank" class="resource-link">
+                    <i class="fab fa-youtube"></i> Academy - دروس برمجة وتقنية
+                </a>
+                <a href="https://www.youtube.com/c/MohamedAbusrea" target="_blank" class="resource-link">
+                    <i class="fab fa-youtube"></i> Mohamed Abusrea - تطوير الويب
+                </a>
+                <a href="https://www.youtube.com/c/Codezilla" target="_blank" class="resource-link">
+                    <i class="fab fa-youtube"></i> Codezilla - دروس برمجة بالعربية
+                </a>
+                
+                <h3 style="color: var(--primary-color); margin: 25px 0 15px;">أدوات للمطورين:</h3>
+                <a href="https://github.com/" target="_blank" class="resource-link">
+                    <i class="fab fa-github"></i> GitHub - تخزين ومشاركة الأكواد
+                </a>
+                <a href="https://codepen.io/" target="_blank" class="resource-link">
+                    <i class="fab fa-codepen"></i> CodePen - تجربة الأكواد مباشرة في المتصفح
+                </a>
+                <a href="https://stackoverflow.com/" target="_blank" class="resource-link">
+                    <i class="fab fa-stack-overflow"></i> StackOverflow - حل المشكلات البرمجية
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- محتوى تبويب التقدم -->
+    <div id="progress-tab" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">
+                <i class="fas fa-chart-line"></i>
+                تقدمي في الخطة
+            </h2>
+            <div id="progress-stats">
+                <div class="empty-state">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>لا توجد بيانات بعد</h3>
+                    <p>ابدأ خطة الدراسة لتتبع تقدمك ورؤية الإحصائيات.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- تذييل الصفحة -->
+    <footer>
+        <p>خطة الدراسة لمعهد ITI &copy; <span id="currentYear"></span> - مصممة خصيصًا للمبتدئين</p>
+        <p>التزم بالخطة وستكون جاهزًا للتقديم خلال <span id="total-plan-days">98</span> يوم</p>
+        <p>تم التطوير باستخدام HTML, CSS, JavaScript</p>
+    </footer>
+
+    <script>
+        // بيانات خطة الدراسة
+        const studyPlan = {
+            phases: [
+                {
+                    id: 1,
+                    name: "التأسيس",
+                    duration: 21,
+                    courses: [
+                        { id: 1, name: "قيم معهد ITI", duration: 2, completed: true, current: true },
+                        { id: 2, name: "مقدمة في البرمجة", duration: 7, completed: false, current: false },
+                        { id: 3, name: "دروس برمجة الكمبيوتر", duration: 7, completed: false, current: false }
+                    ],
+                    startDate: null,
+                    endDate: null
+                },
+                {
+                    id: 2,
+                    name: "أساسيات التقنية",
+                    duration: 14,
+                    courses: [
+                        { id: 4, name: "مقدمة في SQL", duration: 5, completed: false, current: false },
+                        { id: 5, name: "مقدمة في أساسيات الويب", duration: 7, completed: false, current: false }
+                    ],
+                    startDate: null,
+                    endDate: null
+                },
+                {
+                    id: 3,
+                    name: "اختبار البرمجيات",
+                    duration: 21,
+                    courses: [
+                        { id: 6, name: "مقدمة في اختبار البرمجيات", duration: 7, completed: false, current: false },
+                        { id: 7, name: "مقدمة في ISTQB", duration: 7, completed: false, current: false },
+                        { id: 8, name: "كتابة حالات الاختبار", duration: 7, completed: false, current: false }
+                    ],
+                    startDate: null,
+                    endDate: null
+                },
+                {
+                    id: 4,
+                    name: "الامتحانات والمقابلات",
+                    duration: 28,
+                    courses: [
+                        { id: 9, name: "امتحان IQ وحل المشكلات", duration: 7, completed: false, current: false },
+                        { id: 10, name: "امتحان اللغة الإنجليزية", duration: 7, completed: false, current: false },
+                        { id: 11, name: "الامتحان التقني", duration: 7, completed: false, current: false },
+                        { id: 12, name: "مقابلة المهارات الشخصية", duration: 4, completed: false, current: false },
+                        { id: 13, name: "المقابلة التقنية", duration: 4, completed: false, current: false }
+                    ],
+                    startDate: null,
+                    endDate: null
+                }
+            ],
+            startDate: null,
+            totalDuration: 84,
+            active: false
+        };
+
+        // تهيئة البيانات من localStorage
+        let planData = JSON.parse(localStorage.getItem('itiStudyPlan')) || studyPlan;
+        
+        // متغيرات المؤقتات
+        let overallCountdownInterval;
+        let courseTimers = {};
+        
+        // تهيئة الصفحة عند التحميل
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث السنة الحالية
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // تحميل حالة الخطة
+            loadPlanState();
+            
+            // إضافة أحداث النقر على التبويبات
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchTab(this.getAttribute('data-tab'));
+                });
+            });
+            
+            // إذا كانت الخطة نشطة، ابدأ المؤقتات
+            if (planData.active && planData.startDate) {
+                startTimers();
+                updateDailyTasks();
+                updateProgressStats();
+            }
+            
+            // تحديث المؤقت العام كل ثانية
+            overallCountdownInterval = setInterval(updateOverallCountdown, 1000);
+            
+            // تحديث المؤقتات كل دقيقة
+            setInterval(updateCourseTimers, 60000);
+        });
+        
+        // تبديل التبويبات
+        function switchTab(tabName) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // إزالة النشاط من جميع الأزرار
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // إظهار المحتوى المحدد
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // تفعيل الزر المحدد
+            event.currentTarget.classList.add('active');
+            
+            // إذا كان التبويب هو المهام اليومية أو التقدم، قم بتحديثه
+            if (tabName === 'daily-tasks') {
+                updateDailyTasks();
+            } else if (tabName === 'progress') {
+                updateProgressStats();
+            }
+        }
+        
+        // بدء خطة الدراسة
+        function startStudyPlan() {
+            if (!planData.startDate) {
+                planData.startDate = new Date().toISOString();
+                planData.active = true;
+                
+                // حساب تواريخ المراحل
+                calculatePhaseDates();
+                
+                // حفظ في localStorage
+                savePlanState();
+                
+                // بدء المؤقتات
+                startTimers();
+                
+                // تحديث الواجهة
+                updateDailyTasks();
+                updateProgressStats();
+                
+                // تغيير نص الزر
+                document.getElementById('start-plan-btn').innerHTML = '<i class="fas fa-sync-alt"></i> الخطة جارية';
+                document.getElementById('start-plan-btn').classList.add('btn-success');
+                
+                // إظهار رسالة نجاح
+                showNotification('تم بدء خطة الدراسة بنجاح!', 'success');
+            } else {
+                showNotification('خطة الدراسة قيد التنفيذ بالفعل!', 'warning');
+            }
+        }
+        
+        // حساب تواريخ المراحل
+        function calculatePhaseDates() {
+            let currentDate = new Date(planData.startDate);
+            
+            planData.phases.forEach(phase => {
+                phase.startDate = new Date(currentDate);
+                
+                // إضافة مدة المرحلة
+                currentDate.setDate(currentDate.getDate() + phase.duration);
+                phase.endDate = new Date(currentDate);
+                
+                // تحديث عرض المرحلة
+                updatePhaseDisplay(phase);
+            });
+        }
+        
+        // تحديث عرض المرحلة
+        function updatePhaseDisplay(phase) {
+            const phaseElement = document.getElementById(`phase${phase.id}-timer`);
+            if (!phaseElement) return;
+            
+            const now = new Date();
+            const startDate = new Date(phase.startDate);
+            const endDate = new Date(phase.endDate);
+            
+            if (now < startDate) {
+                // لم تبدأ المرحلة بعد
+                const daysUntilStart = Math.ceil((startDate - now) / (1000 * 60 * 60 * 24));
+                phaseElement.textContent = `يبدأ بعد ${daysUntilStart} يومًا`;
+                phaseElement.style.backgroundColor = '#f0f0f0';
+                phaseElement.style.color = var(--gray-color);
+            } else if (now <= endDate) {
+                // المرحلة قيد التنفيذ
+                const daysLeft = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
+                phaseElement.textContent = `${daysLeft} يومًا متبقيًا`;
+                phaseElement.style.backgroundColor = '#e3f2fd';
+                phaseElement.style.color = var(--primary-color);
+            } else {
+                // المرحلة انتهت
+                phaseElement.textContent = 'مكتملة';
+                phaseElement.style.backgroundColor = '#e6f7e6';
+                phaseElement.style.color = var(--completed-color);
+            }
+        }
+        
+        // بدء المؤقتات
+        function startTimers() {
+            if (!planData.active) return;
+            
+            // مؤقتات المقررات
+            planData.phases.forEach(phase => {
+                phase.courses.forEach(course => {
+                    // حساب الوقت المتبقي بناءً على تاريخ بداية المرحلة والتقدم
+                    startCourseTimer(course.id, course.duration);
+                });
+            });
+            
+            // تحديث المؤقت العام
+            updateOverallCountdown();
+        }
+        
+        // بدء مؤقت المقرر
+        function startCourseTimer(courseId, durationInDays) {
+            // تحويل الأيام إلى ساعات (8 ساعات دراسة يوميًا)
+            const totalHours = durationInDays * 8;
+            
+            // إعداد المؤقت
+            let remainingHours = totalHours;
+            
+            // تحديث العرض أولاً
+            updateCourseTimerDisplay(courseId, remainingHours);
+            
+            // بدء المؤقت
+            courseTimers[courseId] = setInterval(() => {
+                remainingHours--;
+                updateCourseTimerDisplay(courseId, remainingHours);
+                
+                if (remainingHours <= 0) {
+                    clearInterval(courseTimers[courseId]);
+                    showNotification(`انتهى وقت المقرر ${courseId}`, 'warning');
+                }
+            }, 3600000); // تحديث كل ساعة (في الواقع، يمكن تغييره ليكون كل دقيقة للاختبار)
+        }
+        
+        // تحديث عرض مؤقت المقرر
+        function updateCourseTimerDisplay(courseId, remainingHours) {
+            const courseElement = document.getElementById(`timer-${courseId}`);
+            if (!courseElement) return;
+            
+            // حساب الأيام والساعات
+            const days = Math.floor(remainingHours / 8);
+            const hours = remainingHours % 8;
+            
+            // تحديث النص
+            courseElement.textContent = `${days}:${hours.toString().padStart(2, '0')}:00`;
+            
+            // تحديث اللون حسب الوقت المتبقي
+            if (remainingHours <= 8) {
+                courseElement.className = 'course-timer timer-expired';
+            } else if (remainingHours <= 24) {
+                courseElement.className = 'course-timer timer-warning';
+            } else {
+                courseElement.className = 'course-timer timer-ok';
+            }
+        }
+        
+        // تحديث المؤقت العام
+        function updateOverallCountdown() {
+            if (!planData.startDate || !planData.active) return;
+            
+            const now = new Date();
+            const startDate = new Date(planData.startDate);
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + planData.totalDuration);
+            
+            const timeLeft = endDate - now;
+            
+            if (timeLeft <= 0) {
+                document.getElementById('overall-countdown').textContent = '00:00:00:00';
+                showNotification('انتهت مدة خطة الدراسة!', 'warning');
+                clearInterval(overallCountdownInterval);
+                return;
+            }
+            
+            // حساب الأيام، الساعات، الدقائق، الثواني
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            // تحديث العرض
+            document.getElementById('overall-countdown').textContent = 
+                `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // تحديث عرض المراحل
+            planData.phases.forEach(phase => {
+                updatePhaseDisplay(phase);
+            });
+        }
+        
+        // تحديث مؤقتات المقررات
+        function updateCourseTimers() {
+            if (!planData.active) return;
+            
+            // هذا يحدث كل دقيقة لضمان دقة المؤقتات
+            planData.phases.forEach(phase => {
+                phase.courses.forEach(course => {
+                    // في تطبيق حقيقي، سنقوم بحساب الوقت المتبقي بناءً على الوقت الفعلي المنقضي
+                    // هنا نكتفي بتحديث العرض
+                    const timerElement = document.getElementById(`timer-${course.id}`);
+                    if (timerElement && !course.completed) {
+                        // نحدّث العرض للحفاظ على دقة المؤقت
+                    }
+                });
+            });
+        }
+        
+        // تحديث المهام اليومية
+        function updateDailyTasks() {
+            const dailyTasksContent = document.getElementById('daily-tasks-content');
+            if (!dailyTasksContent) return;
+            
+            if (!planData.active) {
+                dailyTasksContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-day"></i>
+                        <h3>ابدأ خطة الدراسة أولاً</h3>
+                        <p>انقر على زر "بدء خطة الدراسة" في الشريط الجانبي لبدء رحلتك ورؤية المهام اليومية.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // تحديد المرحلة والمقرر الحالي
+            const now = new Date();
+            let currentPhase = null;
+            let currentCourse = null;
+            
+            for (const phase of planData.phases) {
+                if (phase.startDate && phase.endDate) {
+                    const start = new Date(phase.startDate);
+                    const end = new Date(phase.endDate);
+                    
+                    if (now >= start && now <= end) {
+                        currentPhase = phase;
+                        
+                        // العثور على المقرر الحالي
+                        for (const course of phase.courses) {
+                            if (course.current && !course.completed) {
+                                currentCourse = course;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (!currentPhase || !currentCourse) {
+                dailyTasksContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>لا توجد مهام اليوم</h3>
+                        <p>لا توجد مرحلة نشطة حالياً. انتظر حتى يبدأ موعد المرحلة التالية.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // إنشاء محتوى المهام اليومية
+            const formattedDate = new Date().toLocaleDateString('ar-EG', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            dailyTasksContent.innerHTML = `
+                <div style="background-color: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">
+                        <i class="fas fa-calendar-day"></i> ${formattedDate}
+                    </h3>
+                    <p style="margin-bottom: 5px;"><strong>المرحلة الحالية:</strong> ${currentPhase.name}</p>
+                    <p><strong>المقرر الحالي:</strong> ${currentCourse.name}</p>
+                </div>
+                
+                <h3 style="color: var(--primary-color); margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0;">
+                    <i class="fas fa-tasks"></i> مهام اليوم
+                </h3>
+                
+                <div class="task-list">
+                    <div class="course-item" style="margin-bottom: 15px;">
+                        <div class="course-content">
+                            <div class="course-title">1. مراجعة الدروس السابقة (30 دقيقة)</div>
+                            <div class="course-description">راجع النقاط الرئيسية مما درسته أمس لتثبيت المعلومات.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item" style="margin-bottom: 15px;">
+                        <div class="course-content">
+                            <div class="course-title">2. دراسة درس جديد (90 دقيقة)</div>
+                            <div class="course-description">تابع في المقرر الحالي، ركز على فهم المفاهيم الجديدة.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item" style="margin-bottom: 15px;">
+                        <div class="course-content">
+                            <div class="course-title">3. التطبيق العملي (60 دقيقة)</div>
+                            <div class="course-description">طبّق ما تعلمته بمشروع صغير أو تمارين عملية.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item" style="margin-bottom: 15px;">
+                        <div class="course-content">
+                            <div class="course-title">4. حل أسئلة وتدريبات (30 دقيقة)</div>
+                            <div class="course-description">اختبر فهمك بحل بعض الأسئلة أو المشكلات البسيطة.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item" style="margin-bottom: 15px;">
+                        <div class="course-content">
+                            <div class="course-title">5. التخطيط لليوم التالي (15 دقيقة)</div>
+                            <div class="course-description">حدد ما ستدرسه غدًا وجهز المواد اللازمة.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background-color: #f0f5ff; padding: 15px; border-radius: 10px; margin-top: 25px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 10px;"><i class="fas fa-lightbulb"></i> نصيحة اليوم</h4>
+                    <p>استخدم تقنية "بومودورو": 25 دقيقة تركيز تام + 5 دقائق راحة. كرر هذه الدورة 4 مرات ثم خذ راحة أطول لمدة 15-20 دقيقة.</p>
+                </div>
+            `;
+        }
+        
+        // تحديث إحصائيات التقدم
+        function updateProgressStats() {
+            const progressStats = document.getElementById('progress-stats');
+            if (!progressStats) return;
+            
+            if (!planData.active) {
+                progressStats.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>لا توجد بيانات بعد</h3>
+                        <p>ابدأ خطة الدراسة لتتبع تقدمك ورؤية الإحصائيات.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // حساب الإحصائيات
+            let totalCourses = 0;
+            let completedCourses = 0;
+            let inProgressCourses = 0;
+            let notStartedCourses = 0;
+            
+            planData.phases.forEach(phase => {
+                phase.courses.forEach(course => {
+                    totalCourses++;
+                    if (course.completed) {
+                        completedCourses++;
+                    } else if (course.current) {
+                        inProgressCourses++;
+                    } else {
+                        notStartedCourses++;
+                    }
+                });
+            });
+            
+            const completionRate = totalCourses > 0 ? Math.round((completedCourses / totalCourses) * 100) : 0;
+            
+            // حساب الوقت المنقضي والوقت المتبقي
+            const now = new Date();
+            const startDate = new Date(planData.startDate);
+            const daysPassed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+            const daysLeft = planData.totalDuration - daysPassed;
+            
+            // إنشاء محتوى الإحصائيات
+            progressStats.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="stat-box" style="background-color: #e6f7e6; padding: 20px; border-radius: 10px; text-align: center;">
+                        <div class="stat-value" style="font-size: 2.5rem; font-weight: 700; color: var(--completed-color);">${completedCourses}</div>
+                        <div class="stat-label" style="color: var(--dark-color); font-weight: 600;">مقررات مكتملة</div>
+                    </div>
+                    
+                    <div class="stat-box" style="background-color: #e3f2fd; padding: 20px; border-radius: 10px; text-align: center;">
+                        <div class="stat-value" style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color);">${inProgressCourses}</div>
+                        <div class="stat-label" style="color: var(--dark-color); font-weight: 600;">قيد التنفيذ</div>
+                    </div>
+                    
+                    <div class="stat-box" style="background-color: #f5f5f5; padding: 20px; border-radius: 10px; text-align: center;">
+                        <div class="stat-value" style="font-size: 2.5rem; font-weight: 700; color: var(--notstarted-color);">${notStartedCourses}</div>
+                        <div class="stat-label" style="color: var(--dark-color); font-weight: 600;">لم تبدأ بعد</div>
+                    </div>
+                    
+                    <div class="stat-box" style="background-color: #f0f5ff; padding: 20px; border-radius: 10px; text-align: center;">
+                        <div class="stat-value" style="font-size: 2.5rem; font-weight: 700; color: var(--secondary-color);">${completionRate}%</div>
+                        <div class="stat-label" style="color: var(--dark-color); font-weight: 600;">نسبة الإنجاز</div>
+                    </div>
+                </div>
+                
+                <div style="background-color: #f9f9ff; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 15px;">تقدم المراحل</h3>
+                    ${planData.phases.map(phase => {
+                        const phaseCompleted = phase.courses.filter(c => c.completed).length;
+                        const phaseTotal = phase.courses.length;
+                        const phaseProgress = phaseTotal > 0 ? Math.round((phaseCompleted / phaseTotal) * 100) : 0;
+                        
+                        return `
+                            <div style="margin-bottom: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span>${phase.name}</span>
+                                    <span>${phaseProgress}%</span>
+                                </div>
+                                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                    <div style="height: 100%; width: ${phaseProgress}%; background-color: var(--primary-color); border-radius: 5px; transition: width 0.5s;"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                
+                <div style="background-color: #fff4e6; padding: 20px; border-radius: 10px;">
+                    <h3 style="color: #e8590c; margin-bottom: 15px;">ملخص الوقت</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary-color);">${daysPassed}</div>
+                            <div style="color: var(--dark-color); font-weight: 600;">يوم منقضي</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--secondary-color);">${daysLeft}</div>
+                            <div style="color: var(--dark-color); font-weight: 600;">يوم متبقي</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // تغيير حالة إكمال المقرر
+        function toggleCourseCompletion(courseId) {
+            // البحث عن المقرر في الخطة
+            for (const phase of planData.phases) {
+                for (const course of phase.courses) {
+                    if (course.id === courseId) {
+                        course.completed = !course.completed;
+                        
+                        // إذا تم إكمال المقرر، قم بتحديث المقرر الحالي
+                        if (course.completed) {
+                            // البحث عن المقرر التالي
+                            const nextCourse = findNextCourse(phase, courseId);
+                            if (nextCourse) {
+                                nextCourse.current = true;
+                                course.current = false;
+                            }
+                        }
+                        
+                        // تحديث الواجهة
+                        const courseElement = document.getElementById(`course-${courseId}`);
+                        if (courseElement) {
+                            if (course.completed) {
+                                courseElement.classList.remove('current-course', 'not-started-course');
+                                courseElement.classList.add('completed-course');
+                            } else {
+                                courseElement.classList.remove('completed-course');
+                                courseElement.classList.add('not-started-course');
+                            }
+                        }
+                        
+                        // تحديث تقدم المرحلة
+                        updatePhaseProgress(phase.id);
+                        
+                        // تحديث التقدم الكلي
+                        updateOverallProgress();
+                        
+                        // حفظ الحالة
+                        savePlanState();
+                        
+                        // إظهار إشعار
+                        if (course.completed) {
+                            showNotification(`تهانينا! لقد أكملت "${course.name}"`, 'success');
+                        }
+                        
+                        return;
+                    }
+                }
+            }
+        }
+        
+        // البحث عن المقرر التالي
+        function findNextCourse(phase, currentCourseId) {
+            let foundCurrent = false;
+            
+            for (const course of phase.courses) {
+                if (course.id === currentCourseId) {
+                    foundCurrent = true;
+                } else if (foundCurrent && !course.completed) {
+                    return course;
+                }
+            }
+            
+            return null;
+        }
+        
+        // تحديث تقدم المرحلة
+        function updatePhaseProgress(phaseId) {
+            const phase = planData.phases.find(p => p.id === phaseId);
+            if (!phase) return;
+            
+            // حساب عدد المقررات المكتملة
+            const completedCourses = phase.courses.filter(course => course.completed).length;
+            const totalCourses = phase.courses.length;
+            const progressPercent = totalCourses > 0 ? Math.round((completedCourses / totalCourses) * 100) : 0;
+            
+            // تحديث شريط التقدم
+            const progressBar = document.getElementById(`phase${phaseId}-progress`);
+            const progressText = document.getElementById(`phase${phaseId}-percent`);
+            
+            if (progressBar) {
+                progressBar.style.width = `${progressPercent}%`;
+            }
+            
+            if (progressText) {
+                progressText.textContent = `${progressPercent}%`;
+            }
+        }
+        
+        // تحديث التقدم الكلي
+        function updateOverallProgress() {
+            let totalCourses = 0;
+            let completedCourses = 0;
+            
+            planData.phases.forEach(phase => {
+                phase.courses.forEach(course => {
+                    totalCourses++;
+                    if (course.completed) completedCourses++;
+                });
+            });
+            
+            const progressPercent = totalCourses > 0 ? Math.round((completedCourses / totalCourses) * 100) : 0;
+            
+            // تحديث دائرة التقدم
+            const circle = document.getElementById('circle-progress');
+            const progressText = document.getElementById('overall-progress');
+            
+            if (circle) {
+                const circumference = 2 * Math.PI * 85;
+                const offset = circumference - (progressPercent / 100) * circumference;
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = offset;
+            }
+            
+            if (progressText) {
+                progressText.textContent = `${progressPercent}%`;
+            }
+            
+            // تحديث عدد الأيام المتبقية في التذييل
+            document.getElementById('total-plan-days').textContent = planData.totalDuration;
+        }
+        
+        // إعادة تعيين خطة الدراسة
+        function resetStudyPlan() {
+            if (confirm('هل أنت متأكد من إعادة تعيين خطة الدراسة؟ سيتم حذف كل التقدم الذي أحرزته.')) {
+                // إعادة تعيين البيانات
+                planData = JSON.parse(JSON.stringify(studyPlan));
+                
+                // إيقاف جميع المؤقتات
+                Object.values(courseTimers).forEach(timer => clearInterval(timer));
+                courseTimers = {};
+                
+                // إعادة تعيين الواجهة
+                loadPlanState();
+                
+                // إعادة تعيين زر البدء
+                const startBtn = document.getElementById('start-plan-btn');
+                startBtn.innerHTML = '<i class="fas fa-play-circle"></i> بدء خطة الدراسة';
+                startBtn.classList.remove('btn-success');
+                
+                // حفظ الحالة الجديدة
+                savePlanState();
+                
+                // تحديث المهام اليومية وإحصائيات التقدم
+                updateDailyTasks();
+                updateProgressStats();
+                
+                // إظهار إشعار
+                showNotification('تم إعادة تعيين خطة الدراسة بنجاح.', 'success');
+            }
+        }
+        
+        // تحميل حالة الخطة
+        function loadPlanState() {
+            // تحديث حالة إكمال المقررات
+            planData.phases.forEach(phase => {
+                phase.courses.forEach(course => {
+                    const checkbox = document.getElementById(`course${course.id}-check`);
+                    const courseElement = document.getElementById(`course-${course.id}`);
+                    
+                    if (checkbox) {
+                        checkbox.checked = course.completed;
+                    }
+                    
+                    if (courseElement) {
+                        // إزالة جميع الفئات أولاً
+                        courseElement.classList.remove('completed-course', 'current-course', 'not-started-course');
+                        
+                        // إضافة الفئة المناسبة
+                        if (course.completed) {
+                            courseElement.classList.add('completed-course');
+                        } else if (course.current) {
+                            courseElement.classList.add('current-course');
+                        } else {
+                            courseElement.classList.add('not-started-course');
+                        }
+                    }
+                });
+                
+                // تحديث تقدم المرحلة
+                updatePhaseProgress(phase.id);
+                
+                // تحديث عرض المرحلة إذا كانت الخطة نشطة
+                if (planData.startDate) {
+                    updatePhaseDisplay(phase);
+                }
+            });
+            
+            // تحديث التقدم الكلي
+            updateOverallProgress();
+            
+            // تحديث المؤقت العام
+            updateOverallCountdown();
+            
+            // تحديث عرض زر البدء
+            const startBtn = document.getElementById('start-plan-btn');
+            if (planData.active && startBtn) {
+                startBtn.innerHTML = '<i class="fas fa-sync-alt"></i> الخطة جارية';
+                startBtn.classList.add('btn-success');
+            }
+        }
+        
+        // حفظ حالة الخطة
+        function savePlanState() {
+            localStorage.setItem('itiStudyPlan', JSON.stringify(planData));
+        }
+        
+        // إظهار إشعار
+        function showNotification(message, type = 'info') {
+            // إنشاء عنصر الإشعار
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 1000;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+                max-width: 90%;
+                text-align: center;
+            `;
+            
+            // تلوين الإشعار حسب النوع
+            if (type === 'success') {
+                notification.style.backgroundColor = '#2e7d32';
+            } else if (type === 'warning') {
+                notification.style.backgroundColor = '#e8590c';
+            } else if (type === 'error') {
+                notification.style.backgroundColor = '#d32f2f';
+            } else {
+                notification.style.backgroundColor = var(--primary-color);
+            }
+            
+            notification.textContent = message;
+            
+            // إضافة الإشعار إلى الصفحة
+            document.body.appendChild(notification);
+            
+            // إزالة الإشعار بعد 3 ثواني
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+            
+            // إضافة أنيميشن CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { top: -100px; opacity: 0; }
+                    to { top: 20px; opacity: 1; }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; visibility: hidden; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>
